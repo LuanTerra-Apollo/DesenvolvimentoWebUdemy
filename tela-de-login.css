@@ -1,0 +1,46 @@
+/* Resetando o css base do navegador */
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+    color: #1E60FA;
+    font-size: 42px;
+}
+
+.container {
+    width: 250px;
+    border: 2px solid #ddd;
+    margin: auto;
+    margin-top: 80px;
+    padding: 25px;
+    text-align: center;
+}
+
+input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px;
+    outline: none;
+}
+
+input:focus {
+    border: 2px solid #1E60FA;
+}
+
+button{
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    background-color: #1E60FA;
+    border: none;
+    color: white;
+    outline: none;
+}
+
+.grupo {
+    text-align: start;
+    margin-bottom: 10px;
+}
