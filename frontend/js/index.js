@@ -59,7 +59,7 @@ function cadastrarProdutoNaAPI(produto) {
 }
 
 function atualizarProdutoNaAPI(produto) {
-    
+
     fetch(`http://localhost:3000/produtos/${produto.id}`, {
         headers: {
             "Content-Type": "application/json",
@@ -71,6 +71,23 @@ function atualizarProdutoNaAPI(produto) {
         .then(response => {
             atualizarProdutoNaTela(new Produto(response), false)
             fecharModal();
+        })
+        .catch(erro => {
+            console.log(erro)
+            alert("Deu ruim")
+        })
+}
+
+function deletarProdutoNaAPI(produto) {
+    fetch(`http://localhost:3000/produtos/${produto.id}`, {
+        headers: {
+            "Content-Type": "application/json",
+        },
+        method: "DELETE",
+    }) //endereço da
+        .then(response => response.json())
+        .then(() => {
+            atualizarProdutoNaTela(produto, true)
         })
         .catch(erro => {
             console.log(erro)
@@ -158,7 +175,11 @@ function editarProduto(id) {
 }
 
 function excluirProduto(id) {
-    alert(id)
+    let produto = listaProdutos.find(p => p.id == id)
+
+    if(confirm(`Deseja excluir o produto ${produto.id} - ${produto.nome}`)){
+        deletarProdutoNaAPI(produto);
+    }
 }
 
 function abrirModal() {
