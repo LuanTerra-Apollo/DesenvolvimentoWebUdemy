@@ -1,7 +1,10 @@
 table {
     margin-top: 10px;
+    box-shadow: 0 0 10px 0 rgb(50 50 50 /82%);
 }
 
 .container {
     padding: 30px;
 }
+
+

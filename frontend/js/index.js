@@ -7,6 +7,8 @@ var form = {
     btnCancelar: document.querySelector('#btn-cancelar'),
 }
 
+var listaProdutos = [];
+
 form.btnSalvar.addEventListener('click', () => {
     var produto = {
         nome: form.nome.value,
@@ -47,8 +49,9 @@ function obterProdutosDaAPI() {
     fetch('http://localhost:3000/produtos') //endereço da
     .then(response => response.json())
     .then( response => {
-        // para cada produto que vier, adicionar na tabela
-        preencherTabela(response);
+        listaProdutos = response.map(p => new Produto(p));
+        console.log(listaProdutos)
+        preencherTabela(listaProdutos);
     } )
     .catch(erro => console.log(erro))
 }
@@ -64,16 +67,22 @@ function preencherTabela(produtos) {
         var tdNome = document.createElement("td");
         var tdQuantidade = document.createElement("td");
         var tdValor = document.createElement("td");
+        var tdAcoes = document.createElement("td")
 
         tdId.textContent = produto.id;
         tdNome.textContent = produto.nome;
         tdQuantidade.textContent = produto.quantidadeEstoque;
-        tdValor.textContent = produto.valor;
+        tdValor.textContent = aplicarMascaraParaRealComPrefixo(produto.valor);
+
+        tdAcoes.innerHTML = `
+        <button onclick="editarProduto(${produto.id})" class="btn btn-link">Editar</button> /
+        <button onclick="excluirProduto(${produto.id})" class="btn btn-link">Excluir</button>`;
 
         tr.appendChild(tdId);
         tr.appendChild(tdNome);
         tr.appendChild(tdQuantidade);
         tr.appendChild(tdValor);
+        tr.appendChild(tdAcoes);
 
         tbody.appendChild(tr);
     })
@@ -87,3 +96,12 @@ function limparCampos(){
 }
 
 obterProdutosDaAPI();
+
+
+function editarProduto(id){
+    alert(id)
+}
+
+function excluirProduto(id){
+    alert(id)
+}
