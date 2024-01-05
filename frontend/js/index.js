@@ -1,5 +1,8 @@
-var tbody = document.querySelector("table>tbody");
-var form = {
+let tbody = document.querySelector("table>tbody");
+let btnAdicionar = document.querySelector("#btn-adicionar");
+
+let form = {
+    id: document.querySelector('#id'),
     nome: document.querySelector('#nome'),
     quantidade: document.querySelector('#quantidade'),
     valor: document.querySelector('#valor'),
@@ -7,53 +10,94 @@ var form = {
     btnCancelar: document.querySelector('#btn-cancelar'),
 }
 
-var listaProdutos = [];
+let listaProdutos = [];
+let modoEdicao = false;
+let modalProdutos = null;
+
+btnAdicionar.addEventListener('click', () => {
+    modoEdicao = false;
+    limparCampos()
+    abrirModal();
+})
+
 
 form.btnSalvar.addEventListener('click', () => {
     var produto = {
+        id: form.id.value,
         nome: form.nome.value,
         quantidadeEstoque: form.quantidade.value,
         valor: form.valor.value
     };
-    
-    // Aqui preciso verificar se os campos foram preenchidos
-    if(!produto.nome || !produto.quantidadeEstoque || !produto.valor) {
-        // Se não foram, mandar mensagem para o usuário preencher.
+
+    if (!produto.nome || !produto.quantidadeEstoque || !produto.valor) {
         alert("Os campos nome, quantidade e valor são obrigatórios!");
         return;
     }
-    // Caso contrário enviar os dados para salvar no backend.
-    cadastrarProdutoNaAPI(produto)
+
+    modoEdicao ?
+        atualizarProdutoNaAPI(produto) :
+        cadastrarProdutoNaAPI(produto)
 })
 
-function cadastrarProdutoNaAPI(produto){
-    fetch('http://localhost:3000/produtos',{
+function cadastrarProdutoNaAPI(produto) {
+    fetch('http://localhost:3000/produtos', {
         headers: {
             "Content-Type": "application/json",
         },
-        method:"POST",
+        method: "POST",
         body: JSON.stringify(produto),
     }) //endereço da
-    .then(response => response.json())
-    .then( response => {
-        obterProdutosDaAPI();
-        limparCampos();
-    } )
-    .catch(erro => {
-        console.log(erro)
-        alert("Deu ruim")
-    })
+        .then(response => response.json())
+        .then(response => {
+            obterProdutosDaAPI();
+            limparCampos();
+        })
+        .catch(erro => {
+            console.log(erro)
+            alert("Deu ruim")
+        })
+}
+
+function atualizarProdutoNaAPI(produto) {
+    
+    fetch(`http://localhost:3000/produtos/${produto.id}`, {
+        headers: {
+            "Content-Type": "application/json",
+        },
+        method: "PUT",
+        body: JSON.stringify(produto),
+    }) //endereço da
+        .then(response => response.json())
+        .then(response => {
+            atualizarProdutoNaTela(new Produto(response), false)
+            fecharModal();
+        })
+        .catch(erro => {
+            console.log(erro)
+            alert("Deu ruim")
+        })
 }
 
 function obterProdutosDaAPI() {
     fetch('http://localhost:3000/produtos') //endereço da
-    .then(response => response.json())
-    .then( response => {
-        listaProdutos = response.map(p => new Produto(p));
-        console.log(listaProdutos)
-        preencherTabela(listaProdutos);
-    } )
-    .catch(erro => console.log(erro))
+        .then(response => response.json())
+        .then(response => {
+            listaProdutos = response.map(p => new Produto(p));
+            console.log(listaProdutos)
+            preencherTabela(listaProdutos);
+        })
+        .catch(erro => console.log(erro))
+}
+
+function atualizarProdutoNaTela(produto, deletarProduto) {
+    let index = listaProdutos.findIndex(p => p.id == produto.id)
+
+    deletarProduto ?
+        listaProdutos.splice(index, 1) :
+        listaProdutos.splice(index, 1, produto);
+
+    preencherTabela(listaProdutos);
+
 }
 
 function preencherTabela(produtos) {
@@ -89,7 +133,8 @@ function preencherTabela(produtos) {
 
 }
 
-function limparCampos(){
+function limparCampos() {
+    form.id.value = "";
     form.nome.value = "";
     form.quantidade.value = "";
     form.valor.value = "";
@@ -98,10 +143,35 @@ function limparCampos(){
 obterProdutosDaAPI();
 
 
-function editarProduto(id){
+function AtualizarModal(produto) {
+    form.id.value = produto.id;
+    form.nome.value = produto.nome;
+    form.quantidade.value = produto.quantidadeEstoque;
+    form.valor.value = produto.valor;
+}
+
+function editarProduto(id) {
+    modoEdicao = true;
+    let produto = listaProdutos.find(p => p.id == id)
+    AtualizarModal(produto);
+    abrirModal();
+}
+
+function excluirProduto(id) {
     alert(id)
 }
 
-function excluirProduto(id){
-    alert(id)
+function abrirModal() {
+    if (!modalProdutos) {
+        modalProdutos = new bootstrap.Modal(document.getElementById('modal-produtos'), {
+            backdrop: 'static'
+        });
+    }
+    modalProdutos.show()
+}
+
+function fecharModal() {
+    if (modalProdutos) {
+        modalProdutos.hide();
+    }
 }
