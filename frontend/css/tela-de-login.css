@@ -1,0 +1,68 @@
+/* Resetando o css base do navegador */
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Quicksand', sans-serif;
+}
+
+/* Aqui estamos importando a font do google */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+h1 {
+    color: #0b41be;
+    font-size: 42px;
+}
+
+.container {
+    width: 250px;
+    border: 2px solid #ddd;
+    margin: auto;
+    margin-top: 80px;
+    padding: 25px;
+    text-align: center;
+    display: table;
+    padding-top: 5px;
+    border-radius: 8px;
+}
+
+input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px;
+    outline: none;
+}
+
+input:focus {
+    border: 2px solid #0b41be;
+}
+
+button{
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #0b41be;
+    border: none;
+    color: white;
+    outline: none;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #0A37A2;
+}
+
+.grupo {
+    text-align: start;
+    margin-bottom: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: #0b41be;
+    float: right;
+}
