@@ -27,5 +27,6 @@ app.get('/usuarios', usuarioController.obterTodos);
 app.post('/usuarios', usuarioController.cadastrar);
 app.put('/usuarios/:id', usuarioController.atualizar);
 app.delete('/usuarios/:id', usuarioController.deletar);
+app.post('/login', usuarioController.login);
 
 app.listen(3000, () => console.log("Api rodando na porta 3000"));

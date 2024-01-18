@@ -11,7 +11,6 @@ exports.cadastrar = (req, res) => {
 };
 
 exports.atualizar = (req, res) => {
-    // Aqui vamos cadastrar o produto
     var id = req.params.id;
     var produto = req.body;
 
@@ -23,7 +22,6 @@ exports.atualizar = (req, res) => {
 };
 
 exports.deletar = (req, res) => {
-    // Aqui vamos cadastrar o produto
     var id = req.params.id;
     servicoProduto.deletar(id);
     res.json({mensagem:`Produto com id ${id} foi deletado com sucesso!`});

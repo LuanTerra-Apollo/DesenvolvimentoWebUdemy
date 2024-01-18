@@ -1,4 +1,5 @@
 const Usuario = require('../model/Usuario');
+const bcrypt = require('bcrypt');
 var idAtual = 1;
 
 var listaDeUsuarios = [
@@ -43,9 +44,24 @@ function deletar(id){
     listaDeUsuarios.splice(indice, 1);
 }
 
+async function login(obj){
+    var usuario = listaDeUsuarios.find(u => u.email === obj.email);
+    if(!usuario) {
+        throw new Error("Email ou Senha inválido");
+    }
+
+    const isPasswordValid = await bcrypt.compare(obj.senha, usuario.senha);
+    if (!isPasswordValid) {
+        throw new Error("Email ou Senha inválido");
+    }
+
+    return usuario;
+}
+
 module.exports = {
     obterTodos,
     cadastrar,
     atualizar,
-    deletar
+    deletar,
+    login
 }
