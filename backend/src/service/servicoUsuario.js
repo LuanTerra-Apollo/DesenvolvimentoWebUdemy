@@ -1,5 +1,4 @@
 const Usuario = require('../model/Usuario');
-const bcrypt = require('bcrypt');
 var idAtual = 1;
 
 var listaDeUsuarios = [
@@ -50,8 +49,10 @@ async function login(obj){
         throw new Error("Email ou Senha inválido");
     }
 
-    const isPasswordValid = await bcrypt.compare(obj.senha, usuario.senha);
-    if (!isPasswordValid) {
+    console.log(`Senha fornecida: ${obj.senha}`);
+   console.log(`Senha do usuário: ${usuario.senha}`);
+
+    if (usuario.senha !== obj.senha) {
         throw new Error("Email ou Senha inválido");
     }
 

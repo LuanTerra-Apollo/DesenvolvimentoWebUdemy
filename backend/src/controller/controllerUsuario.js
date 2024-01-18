@@ -29,8 +29,8 @@ exports.deletar = (req, res) => {
 
 exports.login = async (req, res) => {
     try {
-        const { email, password } = req.body;
-        const usuario = await servicoUsuario.login({ email, password });
+        const { email, senha } = req.body;
+        const usuario = await servicoUsuario.login({ email, senha });
         res.json(usuario);
     } catch (err) {
         res.status(400).json({ error: err.message });
